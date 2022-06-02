@@ -2,3 +2,31 @@ body {
   font-family: Verdana, Geneva, Tahoma, sans-serif;
   background-color: #add8e6;
 }
+
+.navbar-custom {
+  background-color: #283676;
+}
+
+.navbar-text {
+  color: white;
+  font-weight: bold;
+  margin-left: 20px;
+}
+
+h2,
+.card-title {
+  font-weight: bold;
+}
+
+.card {
+  height: 95%;
+  overflow: hidden;
+  padding: 2px;
+  margin: 2px;
+}
+
+hr {
+  border: none;
+  padding: 0.5px;
+  display: hidden;
+}
