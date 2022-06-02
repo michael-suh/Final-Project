@@ -20,7 +20,7 @@ export default class App extends React.Component {
   renderPage() {
     const { route } = this.state;
     if (route.path === '') {
-      return <Catalog />;
+      return <Catalog items={this.state.items}/>;
     }
   }
 
