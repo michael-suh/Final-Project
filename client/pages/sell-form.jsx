@@ -101,7 +101,7 @@ export default class DonateForm extends React.Component {
               <Form.Control
                 type="text"
                 name="title"
-                placeholder="Enter Price ex) $100"
+                placeholder="Enter Price without $ and . Ex) 9999 = $99.99"
                 value={this.state.price}
                 onChange={this.handlePrice} />
             </Form.Group>
