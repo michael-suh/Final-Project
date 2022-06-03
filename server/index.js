@@ -2,6 +2,7 @@ require('dotenv/config');
 const path = require('path');
 const express = require('express');
 const errorMiddleware = require('./error-middleware');
+const uploadsMiddleware = require('./uploads-middleware');
 const pg = require('pg');
 
 const db = new pg.Pool({
@@ -18,7 +19,17 @@ if (process.env.NODE_ENV === 'development') {
   app.use(require('./dev-middleware')(publicPath));
 }
 
+const jsonMiddleware = express.json();
+
+app.use(jsonMiddleware);
+
 app.use(express.static(publicPath));
+
+app.use(errorMiddleware);
+
+app.listen(process.env.PORT, () => {
+  process.stdout.write(`\n\napp listening on port ${process.env.PORT}\n\n`);
+});
 
 app.get('/api/items', (req, res, next) => {
   const sql = `
@@ -46,8 +57,21 @@ app.get('/api/items', (req, res, next) => {
 
 });
 
-app.use(errorMiddleware);
+app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
 
-app.listen(process.env.PORT, () => {
-  process.stdout.write(`\n\napp listening on port ${process.env.PORT}\n\n`);
+  const { title, price, content, userId } = req.body;
+  const fileUrl = `/images/${req.file.filename}`;
+  const sql = `
+    insert into "items" ("title", "price", "fileUrl", "userId", "content", "uploadedAt")
+    values ($1, $2, $3, $4, $5, now())
+    returning *
+  `;
+
+  const params = [title, price, fileUrl, userId, content];
+  db.query(sql, params)
+    .then(result => {
+      const [file] = result.rows;
+      res.status(201).json(file);
+    })
+    .catch(err => next(err));
 });
