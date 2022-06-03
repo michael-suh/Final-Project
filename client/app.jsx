@@ -2,6 +2,7 @@ import React from 'react';
 import Home from './pages/home';
 import Catalog from './pages/catalog';
 import parseRoute from './lib/parse-route';
+import SellForm from './pages/sell-form';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -21,6 +22,10 @@ export default class App extends React.Component {
     const { route } = this.state;
     if (route.path === '') {
       return <Catalog items={this.state.items}/>;
+    }
+
+    if (route.path === 'sell') {
+      return <SellForm />;
     }
   }
 
