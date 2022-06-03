@@ -3,6 +3,7 @@ const path = require('path');
 const express = require('express');
 const errorMiddleware = require('./error-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
+const ClientError = require('./client-error');
 const pg = require('pg');
 
 const db = new pg.Pool({
@@ -72,6 +73,35 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
     .then(result => {
       const [file] = result.rows;
       res.status(201).json(file);
+    })
+    .catch(err => next(err));
+});
+
+app.get('/api/items/:itemId', (req, res, next) => {
+  const itemId = Number(req.params.itemId);
+  if (!itemId) {
+    throw new ClientError(400, 'itemId must be a positive integer');
+  }
+  const sql = `
+    select "itemId",
+           "title",
+           "price",
+           "fileUrl",
+           "users"."username",
+           "content",
+           "uploadedAt",
+           "users"."location"
+      from "items"
+      join "users" using ("userId")
+    where  "itemId" = $1
+  `;
+  const params = [itemId];
+  db.query(sql, params)
+    .then(result => {
+      if (!result.rows[0]) {
+        throw new ClientError(400, `cannot find item with itemId ${itemId}`);
+      }
+      res.json(result.rows[0]);
     })
     .catch(err => next(err));
 });
