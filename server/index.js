@@ -5,6 +5,7 @@ const errorMiddleware = require('./error-middleware');
 const uploadsMiddleware = require('./uploads-middleware');
 const ClientError = require('./client-error');
 const pg = require('pg');
+const argon2 = require('argon2');
 
 const db = new pg.Pool({
   connectionString: process.env.DATABASE_URL,
@@ -32,6 +33,7 @@ app.listen(process.env.PORT, () => {
   process.stdout.write(`\n\napp listening on port ${process.env.PORT}\n\n`);
 });
 
+// get items
 app.get('/api/items', (req, res, next) => {
   const sql = `
     select "itemId",
@@ -58,6 +60,7 @@ app.get('/api/items', (req, res, next) => {
 
 });
 
+// upload item
 app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
 
   const { title, price, content, userId } = req.body;
@@ -77,6 +80,7 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
     .catch(err => next(err));
 });
 
+// item details
 app.get('/api/items/:itemId', (req, res, next) => {
   const itemId = Number(req.params.itemId);
   if (!itemId) {
@@ -102,6 +106,32 @@ app.get('/api/items/:itemId', (req, res, next) => {
         throw new ClientError(400, `cannot find item with itemId ${itemId}`);
       }
       res.json(result.rows[0]);
+    })
+    .catch(err => next(err));
+});
+
+// sign-up
+app.post('/api/auth/sign-up', (req, res, next) => {
+  const { username, password, email, latitude, longitude, location } = req.body;
+  if (!username || !password) {
+    throw new ClientError(400, 'username and password are required fields');
+  }
+
+  argon2.hash(password)
+    .then(hashed => {
+      const sql = `
+        insert into "users" ("username", "email", "hashedPassword", "latitude", "longitude", "location", "joinedAt" )
+        values ($1, $2, $3, $4, $5, $6, now())
+        returning "userId", "username", "joinedAt"
+      `;
+
+      const params = [username, email, hashed, latitude, longitude, location];
+      db.query(sql, params)
+        .then(result => {
+          const [user] = result.rows;
+          res.status(201).json(user);
+        })
+        .catch(err => next(err));
     })
     .catch(err => next(err));
 });
