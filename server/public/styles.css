@@ -61,3 +61,7 @@ hr {
   height: 20rem;
   align-items: center;
 }
+
+.submit-button {
+  float: right;
+}

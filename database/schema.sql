@@ -11,8 +11,10 @@ CREATE TABLE "public"."users" (
 	"username" TEXT NOT NULL UNIQUE,
 	"email" TEXT NOT NULL UNIQUE,
 	"hashedPassword" TEXT NOT NULL,
-	"phoneNumber" TEXT NOT NULL,
-	"location" TEXT NOT NULL,
+	"joinedAt" timestamp with time zone NOT NULL,
+	"latitude" float8,
+	"longitude" float8,
+	"location" TEXT,
 	CONSTRAINT "users_pk" PRIMARY KEY ("userId")
 ) WITH (
   OIDS=FALSE
