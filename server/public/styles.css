@@ -65,3 +65,8 @@ hr {
 .submit-button {
   float: right;
 }
+
+.log-in-button {
+  background-color: black;
+  color: #fbedf4;
+}

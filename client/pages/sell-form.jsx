@@ -9,7 +9,7 @@ export default class DonateForm extends React.Component {
       price: '',
       content: '',
       fileUrl: '',
-      userId: 1
+      userId: null
     };
     this.fileInputRef = React.createRef();
     this.handleChange = this.handleChange.bind(this);
@@ -36,18 +36,20 @@ export default class DonateForm extends React.Component {
 
     fetch('/api/uploads', {
       method: 'POST',
+      headers: { 'x-access-token': window.localStorage.getItem('unload-jwt') },
       body: formData
     })
       .then(response => response.json())
       .then(resBody => {
         this.setState({
-          title: '',
-          price: '',
-          content: '',
-          fileUrl: '',
-          userId: 1
+          title: resBody.title,
+          price: resBody.price,
+          content: resBody.content,
+          fileUrl: resBody.fileUrl,
+          userId: resBody.userId
         });
         this.fileInputRef.current.value = null;
+        window.location.hash = '#';
       })
       .catch(error => {
         console.error('Error:', error);
