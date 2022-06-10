@@ -6,7 +6,7 @@ import SellForm from './pages/sell-form';
 import ItemDetails from './pages/item-details';
 import SignUpForm from './pages/sign-up';
 import LoginForm from './pages/log-in';
-import decodeToken from './lib/decode-token';
+import jwtDecode from 'jwt-decode';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -23,7 +23,7 @@ export default class App extends React.Component {
       this.setState({ route: parseRoute(window.location.hash) });
     }, false);
     const token = window.localStorage.getItem('jwt');
-    const user = token ? decodeToken(token) : null;
+    const user = token ? jwtDecode(token) : null;
     this.setState({ user, isAuthorizing: false });
   }
 
