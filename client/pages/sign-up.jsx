@@ -83,10 +83,10 @@ export default class SignUpForm extends React.Component {
           username: '',
           email: '',
           password: '',
-          passwordVerfiy: '',
-          location: ''
+          passwordVerfiy: ''
         });
         alert('Thanks for signing-up!');
+        window.location.hash = '#';
       })
       .catch(error => {
         console.error('Error: ', error);
@@ -144,7 +144,8 @@ export default class SignUpForm extends React.Component {
                 value={this.state.location}
                 onChange={this.handleLocation} />
             </Form.Group>
-            <Button variant="primary" size="sm" type="submit" className="submit-button">Submit</Button>
+            <Button href="#login" variant="primary" size="sm" type="button" className="login-button btn-block">Already a member?</Button>
+            <Button variant="primary" size="sm" type="submit" className="submit-button btn-block">Sign Up</Button>
           </Form>
         </div>
       </div>
