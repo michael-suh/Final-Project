@@ -160,7 +160,7 @@ app.post('/api/uploads', uploadsMiddleware, (req, res, next) => {
 
   const { title, price, content } = req.body;
   const { userId } = req.user;
-  const fileUrl = `/images/${req.file.filename}`;
+  const fileUrl = req.file.location;
   const sql = `
     insert into "items" ("title", "price", "fileUrl", "userId", "content", "uploadedAt")
     values ($1, $2, $3, $4, $5, now())
