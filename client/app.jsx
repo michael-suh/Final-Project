@@ -7,6 +7,7 @@ import ItemDetails from './pages/item-details';
 import SignUpForm from './pages/sign-up';
 import LoginForm from './pages/log-in';
 import jwtDecode from 'jwt-decode';
+import Logout from './pages/log-out';
 
 export default class App extends React.Component {
   constructor(props) {
@@ -48,6 +49,10 @@ export default class App extends React.Component {
 
     if (route.path === 'login') {
       return <LoginForm />;
+    }
+
+    if (route.path === 'user') {
+      return <Logout />;
     }
   }
 

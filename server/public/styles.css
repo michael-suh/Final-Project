@@ -70,3 +70,11 @@ hr {
   background-color: black;
   color: #fbedf4;
 }
+
+@media (min-width: 720px) and (max-width: 980px) {
+  .item-column {
+    margin: auto;
+    flex-basis: 50%;
+    max-width: 50%;
+  }
+}
