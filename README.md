@@ -3,7 +3,7 @@
 A full stack web application for people who want to sell or buy used items. 
 
 ## Live Demo
-[UNLOAD] (https://unload-items.herokuapp.com/#)
+[UNLOAD](https://unload-items.herokuapp.com/#)
 
 ## Technologies Used 
 - React
