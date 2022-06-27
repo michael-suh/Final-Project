@@ -20,6 +20,7 @@ A full stack web application for people who want to sell or buy used items.
 - Babel
 - Dotenv
 - Heroku
+- AWS S3
 
 ## Features
 - User can view items for sale
