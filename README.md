@@ -1,4 +1,4 @@
-# Unload: Sell Used Items 
+# Unload: Sell or Buy Used Items 
 
 A full stack web application for people who want to sell or buy used items. 
 
